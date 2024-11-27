@@ -16,37 +16,38 @@ def main():
 
 #function to set the game screen
 def setScreen(player):
-    #setting fps
-    clock = pygame.time.Clock()
-    dt = 0
-
     #set display dimensions and create the screen
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     #set the window title
     pygame.display.set_caption("Asteroids")
-
-    #fill the screen with black color
-    screen.fill((0,0,0))
-
-    #re-render the player on the screen each frame
-    player.draw(screen)
-
-    #update the display
-    pygame.display.flip()
+    
+    #setting fps
+    clock = pygame.time.Clock()
+    
+    dt = 0
 
     running = True
     while running:
         for event in pygame.event.get():
-
-            #call the tick method to pause for define time
-            clock.tick(60)
-            dt = clock.tick() / 1000  
             if event.type == pygame.QUIT:
-                return
-    
-    #quit pygame
-    pygame.quit()
+                running = False
+        
+        #move the player around
+        player.update(dt)
+        
+        #fill the screen with black color
+        screen.fill((0,0,0))
+
+        #re-render the player on the screen each frame
+        player.draw(screen)
+
+        #update the display
+        pygame.display.flip()
+
+        #call the tick method to pause for define time
+        dt = clock.tick(60) / 1000
+
 
 if __name__ == "__main__":
     main()
