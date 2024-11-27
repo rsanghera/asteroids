@@ -9,13 +9,10 @@ from player import *
 def main():
     print("Starting asteroids!")
     pygame.init()
-    x = SCREEN_WIDTH / 2
-    y = SCREEN_HEIGHT / 2
-    player1 = Player(x,y)
-    setScreen(player1)
+    setScreen()
 
 #function to set the game screen
-def setScreen(player):
+def setScreen():
     #set display dimensions and create the screen
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -27,6 +24,17 @@ def setScreen(player):
     
     dt = 0
 
+    #groups to manage game objects
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    #adding the groups to the player class
+    Player.containers = (updatable, drawable)
+
+    x = SCREEN_WIDTH / 2
+    y = SCREEN_HEIGHT / 2
+    player1 = Player(x,y)
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -34,13 +42,15 @@ def setScreen(player):
                 running = False
         
         #move the player around
-        player.update(dt)
-        
+        for i in updatable:
+            i.update(dt)
+
         #fill the screen with black color
         screen.fill((0,0,0))
 
         #re-render the player on the screen each frame
-        player.draw(screen)
+        for i in drawable:
+            i.draw(screen)
 
         #update the display
         pygame.display.flip()
