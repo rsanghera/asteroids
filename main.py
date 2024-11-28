@@ -5,6 +5,8 @@ import pygame
 from constants import *
 from circleshape import *
 from player import *
+from asteroid import *
+from asteroidfield import *
 
 def main():
     print("Starting asteroids!")
@@ -27,9 +29,14 @@ def setScreen():
     #groups to manage game objects
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
 
     #adding the groups to the player class
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
+
+    asterfield1 = AsteroidField()
 
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
@@ -44,6 +51,12 @@ def setScreen():
         #move the player around
         for i in updatable:
             i.update(dt)
+
+        for i in asteroids:
+            if i.checkCollision(player1) == True:
+                print("Game Over!")
+                running = False
+
 
         #fill the screen with black color
         screen.fill((0,0,0))
