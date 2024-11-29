@@ -30,11 +30,13 @@ def setScreen():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     #adding the groups to the player class
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable)
+    Shot.containers =(shots, updatable, drawable)
 
     asterfield1 = AsteroidField()
 
@@ -56,6 +58,10 @@ def setScreen():
             if i.checkCollision(player1) == True:
                 print("Game Over!")
                 running = False
+            for j in shots:
+                if i.checkCollision(j) == True:
+                    j.kill()
+                    i.split()
 
 
         #fill the screen with black color
